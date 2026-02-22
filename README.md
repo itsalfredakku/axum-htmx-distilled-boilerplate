@@ -21,7 +21,7 @@ A full-stack Rust web application boilerplate that delivers SPA-like interactivi
 cargo run
 ```
 
-Open [http://localhost:3001](http://localhost:3001) for the app and [http://localhost:3001/api-docs/](http://localhost:3001/api-docs/) for Swagger UI.
+Open [http://localhost:8000](http://localhost:8000) for the app and [http://localhost:8000/api-docs/](http://localhost:8000/api-docs/) for Swagger UI.
 
 ## How It Works
 
@@ -93,7 +93,7 @@ Default settings live in `config/app.toml`:
 ```toml
 [server]
 host = "0.0.0.0"
-port = 3001
+port = 8000
 
 [logging]
 level = "info"
