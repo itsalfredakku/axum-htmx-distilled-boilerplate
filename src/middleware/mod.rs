@@ -88,7 +88,7 @@ pub async fn security_headers(request: Request, next: Next) -> Response {
     h.insert(
         header::HeaderName::from_static("permissions-policy"),
         header::HeaderValue::from_static(
-            "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+            "camera=(), microphone=(), geolocation=(), browsing-topics=()",
         ),
     );
 
