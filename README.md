@@ -1,4 +1,4 @@
-# Axum + HTMX Boilerplate
+# Axum + HTMX (Distilled) Boilerplate
 
 A starter template for building server-rendered Rust web applications with [Axum](https://github.com/tokio-rs/axum) and [HTMX](https://htmx.org). Zero JavaScript frameworks, zero CDN dependencies, fully self-contained.
 
