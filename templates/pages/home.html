@@ -3,17 +3,25 @@
 
 {% block content %}
 <div class="container-fluid">
-    <div class="mb-4">
-        <h1 class="text-2xl">Dashboard</h1>
-        <p class="text-sm text-muted">Server status and quick actions</p>
+    <!-- Hero -->
+    <div class="hero">
+        <h1><i class="bi bi-shield-lock-fill text-brand"></i> Hardened Boilerplate</h1>
+        <p>Production-ready Axum + HTMX stack with zero external dependencies, strict CSP, SRI hashes, CSRF protection, and server-rendered SPA navigation.</p>
+        <div style="display:flex;gap:var(--space-3);margin-top:var(--space-4);flex-wrap:wrap;">
+            <a href="/demo" class="btn btn-primary" hx-boost="true" hx-target="#page-content" hx-select="#page-content" hx-swap="outerHTML" hx-push-url="true"><i class="bi bi-lightning"></i> Explore Demos</a>
+            <a href="/components" class="btn btn-outline-primary" hx-boost="true" hx-target="#page-content" hx-select="#page-content" hx-swap="outerHTML" hx-push-url="true"><i class="bi bi-grid-1x2"></i> View Components</a>
+        </div>
     </div>
 
-    <!-- Status card loaded via HTMX -->
+    <!-- Live Status — loaded via HTMX -->
+    <div class="section-header">
+        <h2>Live Status</h2>
+        <p>Auto-refreshes every 10 seconds via HTMX polling</p>
+    </div>
     <div id="status-card"
          hx-get="/partials/status-card"
          hx-trigger="load, every 10s"
          hx-swap="innerHTML">
-        <!-- Skeleton loading state -->
         <div class="row g-3 mb-4">
             <div class="col-md-4"><div class="card stat-card"><div class="skeleton skeleton-text"></div></div></div>
             <div class="col-md-4"><div class="card stat-card"><div class="skeleton skeleton-text"></div></div></div>
@@ -21,19 +29,68 @@
         </div>
     </div>
 
-    <!-- Quick actions -->
+    <!-- Features grid -->
+    <div class="section-header">
+        <h2>What's Inside</h2>
+        <p>Everything you need to build secure, fast web applications</p>
+    </div>
+    <div class="feature-grid mb-6">
+        <div class="feature-card">
+            <div class="feature-icon feature-icon-brand"><i class="bi bi-cpu"></i></div>
+            <h4>Axum Framework</h4>
+            <p>Memory-safe Rust backend. Compiled binary, no runtime overhead.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon feature-icon-info"><i class="bi bi-lightning-charge"></i></div>
+            <h4>HTMX Powered</h4>
+            <p>SPA-like navigation, partials, polling — all with zero custom JS frameworks.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon feature-icon-success"><i class="bi bi-shield-check"></i></div>
+            <h4>Security First</h4>
+            <p>Strict CSP, SRI hashes, CSRF tokens, HttpOnly cookies, no CDN dependencies.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon feature-icon-warning"><i class="bi bi-box-seam"></i></div>
+            <h4>Zero External Deps</h4>
+            <p>All assets vendored locally. No npm, no CDN, no supply chain risk.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon feature-icon-danger"><i class="bi bi-database"></i></div>
+            <h4>SQLite + SQLx</h4>
+            <p>Embedded database with compile-time checked queries and auto-migrations.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon feature-icon-brand"><i class="bi bi-file-earmark-code"></i></div>
+            <h4>Dual Templates</h4>
+            <p>Askama (compiled) in release. MiniJinja (hot-reload) in debug. Best of both.</p>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="section-header">
+        <h2>Quick Actions</h2>
+        <p>Jump into the key areas of this boilerplate</p>
+    </div>
     <div class="row g-3">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="card">
                 <h5><i class="bi bi-lightning text-warning"></i> HTMX Demo</h5>
-                <p class="text-sm text-muted">See HTMX partials, forms, and dynamic updates in action</p>
+                <p class="text-sm text-muted">Click-to-load, forms, polling, search — all server-rendered</p>
                 <a href="/demo" class="btn btn-primary btn-sm" hx-boost="true" hx-target="#page-content" hx-select="#page-content" hx-swap="outerHTML" hx-push-url="true">Open Demo</a>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
+            <div class="card">
+                <h5><i class="bi bi-grid-1x2 text-info"></i> UI Components</h5>
+                <p class="text-sm text-muted">Buttons, cards, alerts, badges, forms, tables — living style guide</p>
+                <a href="/components" class="btn btn-outline-primary btn-sm" hx-boost="true" hx-target="#page-content" hx-select="#page-content" hx-swap="outerHTML" hx-push-url="true">View Components</a>
+            </div>
+        </div>
+        <div class="col-md-4">
             <div class="card">
                 <h5><i class="bi bi-shield-lock text-success"></i> Security</h5>
-                <p class="text-sm text-muted">CSRF tokens, SRI hashes, strict CSP, no external dependencies</p>
+                <p class="text-sm text-muted">Architecture, threat model, and how every layer protects you</p>
                 <a href="/about" class="btn btn-outline-secondary btn-sm" hx-boost="true" hx-target="#page-content" hx-select="#page-content" hx-swap="outerHTML" hx-push-url="true">Learn More</a>
             </div>
         </div>
