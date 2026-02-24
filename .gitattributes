@@ -1,0 +1,3 @@
+# SRI-hashed files must have consistent line endings (LF)
+# Otherwise the hash changes between platforms and browsers block the script
+static/js/*.js text eol=lf

@@ -25,7 +25,7 @@ const HTMX_SRI_HASH: &str =
 
 /// SRI hash for app.js — update if the file changes.
 const APP_SRI_HASH: &str =
-    "sha384-NivfpYoQXUQVya/JlyGuORbMF2zzTdZsKWOUqDGzIjfVSytHdwPzUZ42PcNlIQ7o";
+    "sha384-yYlvqbxhKBZIj2+YCRfQaLIi2w6Co6aRsVvsgD/gdiBz0wl/RYpScFKQO5eNiolY";
 
 // ─── Security Headers ───────────────────────────────────────────────────────
 
