@@ -114,12 +114,12 @@
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <a href="/" class="sidebar-brand">
+                <a href="/" class="sidebar-brand" hx-boost="true" hx-target="#page-content" hx-select="#page-content" hx-swap="outerHTML" hx-push-url="true">
                     <i class="bi bi-shield-lock-fill"></i>
                     <span class="brand-text">Hardened App</span>
                 </a>
             </div>
-            <nav class="sidebar-nav">
+            <nav class="sidebar-nav" hx-boost="true" hx-target="#page-content" hx-select="#page-content" hx-swap="outerHTML" hx-push-url="true">
                 <a href="/" class="nav-link {% if current_page == "home" %}active{% endif %}">
                     <i class="bi bi-house"></i><span class="nav-text">Home</span>
                 </a>
@@ -147,8 +147,10 @@
                     </button>
                 </div>
             </header>
-            <main class="main-content">
-                {% block content %}{% endblock %}
+            <main class="main-content" id="main-content">
+                <div id="page-content">
+                    {% block content %}{% endblock %}
+                </div>
             </main>
         </div>
     </div>
@@ -157,7 +159,7 @@
 
     <!-- Minimal UI interactions — sidebar, theme, CSRF refresh. Fully auditable. -->
     <script src="/static/js/app.js"
-            integrity="sha384-PMounJsLzecWPmGgUp+rmq81ao6CaK1vp02qhyBK66VebP1pIGgbYS+m14+AsFN5"
+            integrity="sha384-NivfpYoQXUQVya/JlyGuORbMF2zzTdZsKWOUqDGzIjfVSytHdwPzUZ42PcNlIQ7o"
             crossorigin="anonymous"></script>
 </body>
 </html>

@@ -33,3 +33,23 @@ document.body.addEventListener('htmx:afterRequest', function (e) {
         document.body.setAttribute('hx-headers', JSON.stringify({ 'X-CSRF-Token': token }));
     }
 });
+
+// SPA navigation — update sidebar active state and page title after content swap
+function updateNavState() {
+    var path = window.location.pathname;
+    document.querySelectorAll('.sidebar-nav .nav-link').forEach(function (link) {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === path) {
+            link.classList.add('active');
+        }
+    });
+    var titles = { '/': 'Home', '/demo': 'Demo', '/about': 'About' };
+    document.title = (titles[path] || 'Page') + ' - Axum HTMX App';
+}
+
+// Forward navigation (HTMX push)
+document.body.addEventListener('htmx:pushedIntoHistory', updateNavState);
+// Back/forward button
+window.addEventListener('popstate', function () {
+    setTimeout(updateNavState, 10);
+});
