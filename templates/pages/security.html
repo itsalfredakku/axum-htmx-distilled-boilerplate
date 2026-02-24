@@ -1,0 +1,460 @@
+{% extends "base.html" %}
+{% block title %}Security - Axum HTMX App{% endblock %}
+
+{% block content %}
+<div class="container-fluid container-narrow">
+    <div class="section-header mb-6">
+        <h1 class="text-2xl"><i class="bi bi-shield-lock-fill text-brand"></i> Security Practices</h1>
+        <p>A comprehensive overview of how this application is hardened — from code to deployment.</p>
+    </div>
+
+    <!-- Security Posture Overview -->
+    <div class="hero mb-6">
+        <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="icon-badge feature-icon-success" style="width:56px;height:56px;font-size:1.5rem;"><i class="bi bi-shield-fill-check"></i></div>
+            <div>
+                <h2 style="margin-bottom:0">Zero-Trust by Default</h2>
+                <p class="text-sm text-muted mb-0" style="max-width:none">Every layer assumes the previous one failed. Every request is verified. Every output is escaped.</p>
+            </div>
+        </div>
+        <div class="row g-3 mt-3">
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="stat-value text-brand">0</div>
+                    <div class="stat-label">Custom JS lines</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="stat-value text-brand">0</div>
+                    <div class="stat-label">npm / CDN deps</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="stat-value text-brand">1</div>
+                    <div class="stat-label">JS file (HTMX, SRI-pinned)</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="stat-value text-brand">7</div>
+                    <div class="stat-label">Security layers</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OWASP Top 10 Coverage -->
+    <div class="card mb-4">
+        <h5><i class="bi bi-list-check"></i> OWASP Top 10 Coverage</h5>
+        <p class="text-sm text-muted mb-3">How this application addresses each OWASP Top 10 (2021) category.</p>
+        <table>
+            <thead>
+                <tr><th style="width:30%">OWASP Category</th><th style="width:15%">Status</th><th>Mitigation</th></tr>
+            </thead>
+            <tbody class="text-sm">
+                <tr>
+                    <td><strong>A01: Broken Access Control</strong></td>
+                    <td><span class="badge badge-success">Mitigated</span></td>
+                    <td>Per-session CSRF tokens on all state-changing requests. <code>SameSite=Strict</code> cookies prevent cross-origin request abuse. <code>X-Frame-Options: DENY</code> blocks clickjacking.</td>
+                </tr>
+                <tr>
+                    <td><strong>A02: Cryptographic Failures</strong></td>
+                    <td><span class="badge badge-success">Mitigated</span></td>
+                    <td>CSRF tokens use HMAC-SHA256 with a per-boot random secret. Session IDs generated via cryptographically secure RNG. No sensitive data stored in cookies.</td>
+                </tr>
+                <tr>
+                    <td><strong>A03: Injection</strong></td>
+                    <td><span class="badge badge-success">Mitigated</span></td>
+                    <td>Askama templates auto-escape all outputs at compile-time. SQLx uses parameterised queries — no string concatenation. Strict CSP blocks inline scripts.</td>
+                </tr>
+                <tr>
+                    <td><strong>A04: Insecure Design</strong></td>
+                    <td><span class="badge badge-success">Mitigated</span></td>
+                    <td>Architecture-level security: no JSON API, no CORS, no external dependencies, <strong>zero custom JavaScript</strong>. Server-rendered HTML with HTMX + CSS-only UI controls minimises attack surface by design.</td>
+                </tr>
+                <tr>
+                    <td><strong>A05: Security Misconfiguration</strong></td>
+                    <td><span class="badge badge-success">Mitigated</span></td>
+                    <td>Security headers are hardcoded in middleware (not config-dependent). Server fingerprint stripped. Permissions-Policy disables unused browser APIs. Cache-Control prevents sensitive page caching.</td>
+                </tr>
+                <tr>
+                    <td><strong>A06: Vulnerable Components</strong></td>
+                    <td><span class="badge badge-success">Eliminated</span></td>
+                    <td>Zero npm dependencies. Zero CDN includes. All JS/CSS vendored locally and SRI-pinned. Rust dependencies auditable via <code>cargo audit</code>.</td>
+                </tr>
+                <tr>
+                    <td><strong>A07: Auth Failures</strong></td>
+                    <td><span class="badge badge-info">N/A (boilerplate)</span></td>
+                    <td>Session infrastructure is in place with HttpOnly + SameSite=Strict cookies. Auth logic is left to the implementor — the secure session layer is ready.</td>
+                </tr>
+                <tr>
+                    <td><strong>A08: Data Integrity Failures</strong></td>
+                    <td><span class="badge badge-success">Mitigated</span></td>
+                    <td>SRI hash on the single <code>&lt;script&gt;</code> tag (HTMX) ensures browser rejects tampered JS. CSP <code>script-src</code> only allows SRI-verified files. Zero custom JS eliminates an entire class of XSS vectors. Template compilation prevents injection.</td>
+                </tr>
+                <tr>
+                    <td><strong>A09: Logging Failures</strong></td>
+                    <td><span class="badge badge-success">Mitigated</span></td>
+                    <td>Structured logging via <code>tracing</code> crate. Request timing, method, path, and status logged — but never cookies, tokens, or request bodies. Log level configurable.</td>
+                </tr>
+                <tr>
+                    <td><strong>A10: SSRF</strong></td>
+                    <td><span class="badge badge-success">Eliminated</span></td>
+                    <td>The application makes zero outbound HTTP requests. No URL fetching, no webhooks, no remote resource loading. Attack surface doesn't exist.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Security Stack Diagram -->
+    <div class="card mb-4">
+        <h5><i class="bi bi-layers"></i> Security Stack</h5>
+        <p class="text-sm text-muted mb-3">Every request passes through multiple hardened layers before reaching your handler.</p>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>TLS Termination</h4>
+                    <p>HTTPS enforced at the reverse proxy / cloud layer. All traffic encrypted in transit.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Request Logging</h4>
+                    <p>Every request logged with method, path, status, and duration. No sensitive data captured. Anomaly detection-ready.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Security Headers Injection</h4>
+                    <p>CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, and server fingerprint stripping applied to every response.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>Session Management</h4>
+                    <p>Server-side session store with cryptographic session IDs. Cookies are HttpOnly (no JS access), SameSite=Strict (no cross-site sending), and Secure-ready.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h4>CSRF Validation</h4>
+                    <p>All POST/PUT/DELETE requests require a valid HMAC-SHA256 CSRF token. Tokens are bound to the session and rotate automatically.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">6</div>
+                <div class="step-content">
+                    <h4>Handler Logic</h4>
+                    <p>Your Axum handler runs in memory-safe Rust. Templates are compiled — no runtime template injection. SQLx queries are parameterised.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">7</div>
+                <div class="step-content">
+                    <h4>SRI-Verified Client (Zero Custom JS)</h4>
+                    <p>The only JS is HTMX (vendored, SRI-pinned). Sidebar toggle, theme switch, and SPA nav active states are all pure CSS + HTMX OOB swaps — no custom JavaScript whatsoever. CSP blocks inline scripts. Auto-escaping prevents stored XSS.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Security Policy Breakdown -->
+    <div class="card mb-4">
+        <h5><i class="bi bi-file-earmark-lock"></i> Content Security Policy (CSP)</h5>
+        <p class="text-sm text-muted mb-3">The CSP header controls what resources the browser is allowed to load.</p>
+        <table>
+            <thead>
+                <tr><th>Directive</th><th>Value</th><th>Effect</th></tr>
+            </thead>
+            <tbody class="text-sm">
+                <tr><td><code>default-src</code></td><td><code>'self'</code></td><td>Only load resources from same origin</td></tr>
+                <tr><td><code>script-src</code></td><td><code>'self' + SRI hashes</code></td><td>Only execute scripts that match SRI hash</td></tr>
+                <tr><td><code>style-src</code></td><td><code>'self' 'unsafe-inline'</code></td><td>Styles from self + inline (design tokens)</td></tr>
+                <tr><td><code>img-src</code></td><td><code>'self' data:</code></td><td>Images from self + data URIs only</td></tr>
+                <tr><td><code>font-src</code></td><td><code>'self'</code></td><td>Fonts only from vendored local files</td></tr>
+                <tr><td><code>connect-src</code></td><td><code>'self'</code></td><td>XHR/fetch only to same origin (HTMX)</td></tr>
+                <tr><td><code>frame-ancestors</code></td><td><code>'none'</code></td><td>Cannot be embedded in any iframe</td></tr>
+                <tr><td><code>base-uri</code></td><td><code>'self'</code></td><td>Prevent base tag hijacking</td></tr>
+                <tr><td><code>form-action</code></td><td><code>'self'</code></td><td>Forms can only submit to same origin</td></tr>
+                <tr><td><code>object-src</code></td><td><code>'none'</code></td><td>Block Flash, Java applets, etc.</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- HTTP Headers -->
+    <div class="card mb-4">
+        <h5><i class="bi bi-shield-exclamation"></i> Security Headers</h5>
+        <p class="text-sm text-muted mb-3">Additional HTTP headers applied to every response.</p>
+        <div class="list-group">
+            <div class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong class="text-sm font-mono">X-Content-Type-Options</strong>
+                        <div class="text-xs text-muted">Prevents MIME-type sniffing attacks</div>
+                    </div>
+                    <code class="text-xs">nosniff</code>
+                </div>
+            </div>
+            <div class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong class="text-sm font-mono">X-Frame-Options</strong>
+                        <div class="text-xs text-muted">Blocks clickjacking via iframe embedding</div>
+                    </div>
+                    <code class="text-xs">DENY</code>
+                </div>
+            </div>
+            <div class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong class="text-sm font-mono">Referrer-Policy</strong>
+                        <div class="text-xs text-muted">Prevents URL leaks to third parties</div>
+                    </div>
+                    <code class="text-xs">no-referrer</code>
+                </div>
+            </div>
+            <div class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong class="text-sm font-mono">X-DNS-Prefetch-Control</strong>
+                        <div class="text-xs text-muted">Prevents DNS leak via prefetch (Tor-safe)</div>
+                    </div>
+                    <code class="text-xs">off</code>
+                </div>
+            </div>
+            <div class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong class="text-sm font-mono">Permissions-Policy</strong>
+                        <div class="text-xs text-muted">Disables camera, microphone, geolocation, topics</div>
+                    </div>
+                    <code class="text-xs">camera=(), microphone=(), ...</code>
+                </div>
+            </div>
+            <div class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong class="text-sm font-mono">Server</strong>
+                        <div class="text-xs text-muted">Server identification stripped</div>
+                    </div>
+                    <code class="text-xs">(empty)</code>
+                </div>
+            </div>
+            <div class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong class="text-sm font-mono">Cache-Control</strong>
+                        <div class="text-xs text-muted">Prevents caching of dynamic pages</div>
+                    </div>
+                    <code class="text-xs">no-store, no-cache, must-revalidate</code>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SRI (Subresource Integrity) -->
+    <div class="card mb-4">
+        <h5><i class="bi bi-fingerprint"></i> Subresource Integrity (SRI)</h5>
+        <p class="text-sm text-muted mb-3">The single <code>&lt;script&gt;</code> tag includes an <code>integrity</code> attribute. If the file content changes by even one byte, the browser refuses to execute it.</p>
+        <div class="alert alert-info mb-3">
+            <div class="alert-title"><i class="bi bi-info-circle-fill"></i> <strong>How SRI works</strong></div>
+            <div class="alert-body text-sm">The server computes <code>SHA-384</code> of the JS file. The hash is embedded in the HTML. The browser computes its own hash of the downloaded file and compares — any mismatch = script blocked.</div>
+        </div>
+        <table>
+            <thead>
+                <tr><th>File</th><th>Hash Algorithm</th><th>Purpose</th></tr>
+            </thead>
+            <tbody class="text-sm">
+                <tr>
+                    <td class="font-mono">htmx.min.js</td>
+                    <td>SHA-384</td>
+                    <td>Vendored HTMX library — the <strong>only JavaScript in the entire application</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="alert alert-success mt-3 mb-0">
+            <div class="alert-title"><i class="bi bi-check-circle-fill"></i> <strong>Zero custom JavaScript</strong></div>
+            <div class="alert-body text-sm">All UI interactions (sidebar toggle, theme switch, navigation active states) are implemented with pure CSS and HTMX attributes. No custom <code>.js</code> files exist. This eliminates XSS vectors from custom code entirely.</div>
+        </div>
+    </div>
+
+    <!-- CSRF Protection -->
+    <div class="card mb-4">
+        <h5><i class="bi bi-key"></i> CSRF Protection</h5>
+        <p class="text-sm text-muted mb-3">Cross-Site Request Forgery prevention via HMAC-based tokens.</p>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon feature-icon-brand"><i class="bi bi-lock-fill"></i></div>
+                    <h4>Token Generation</h4>
+                    <p>HMAC-SHA256 of session ID + boot-time secret. Cryptographically tied to the user's session.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon feature-icon-success"><i class="bi bi-arrow-repeat"></i></div>
+                    <h4>Server-Rendered Delivery</h4>
+                    <p>The CSRF token is embedded directly in the <code>hx-headers</code> attribute on <code>&lt;body&gt;</code> by the server template — no JavaScript reads or manipulates it.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon feature-icon-warning"><i class="bi bi-shield-x"></i></div>
+                    <h4>Validation</h4>
+                    <p>Every POST, PUT, and DELETE request is checked. Missing or invalid token = <strong>403 Forbidden</strong>.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon feature-icon-info"><i class="bi bi-cookie"></i></div>
+                    <h4>Cookie Security</h4>
+                    <p>Session cookie: <code>HttpOnly</code> (no JS access), <code>SameSite=Strict</code> (no cross-origin sending), <code>Path=/</code>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CSS-Only Architecture -->
+    <div class="card mb-4">
+        <h5><i class="bi bi-palette"></i> CSS-Only UI Architecture</h5>
+        <p class="text-sm text-muted mb-3">All interactive UI controls are implemented without custom JavaScript — reducing attack surface to zero.</p>
+        <div class="row g-3 mb-3">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon feature-icon-brand"><i class="bi bi-layout-sidebar"></i></div>
+                    <h4>Sidebar Toggle</h4>
+                    <p>Hidden <code>&lt;input type="checkbox"&gt;</code> + <code>&lt;label&gt;</code> + CSS <code>:checked</code> sibling selectors. No JS event listeners.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon feature-icon-info"><i class="bi bi-moon-stars"></i></div>
+                    <h4>Theme Toggle</h4>
+                    <p>Same checkbox pattern. CSS <code>:checked</code> flips icon visibility. OS <code>prefers-color-scheme</code> as fallback.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon feature-icon-success"><i class="bi bi-signpost-split"></i></div>
+                    <h4>Nav Active State</h4>
+                    <p>HTMX <code>hx-select-oob</code> swaps the sidebar nav from the server response. Server template sets <code>.active</code> class — zero JS.</p>
+                </div>
+            </div>
+        </div>
+        <div class="alert alert-info mb-0">
+            <div class="alert-title"><i class="bi bi-info-circle-fill"></i> <strong>Why this matters</strong></div>
+            <div class="alert-body text-sm">Every line of custom JS is a potential XSS vector. By using CSS for UI state and HTMX OOB swaps for dynamic updates, we achieve a fully interactive SPA with literally zero lines of custom JavaScript to audit, test, or defend.</div>
+        </div>
+    </div>
+
+    <!-- Supply Chain Security -->
+    <div class="card mb-4">
+        <h5><i class="bi bi-box-seam"></i> Supply Chain Security</h5>
+        <p class="text-sm text-muted mb-3">This application has zero runtime dependencies on external services or package registries.</p>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="text-center p-3" style="background:var(--color-background-muted);border-radius:var(--radius-lg);">
+                    <div class="icon-badge feature-icon-danger mx-auto mb-2" style="margin:0 auto var(--space-2) auto;"><i class="bi bi-npm"></i></div>
+                    <div class="text-sm fw-bold">No npm</div>
+                    <div class="text-xs text-muted">No node_modules, no lockfile, no build step</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center p-3" style="background:var(--color-background-muted);border-radius:var(--radius-lg);">
+                    <div class="icon-badge feature-icon-warning mx-auto mb-2" style="margin:0 auto var(--space-2) auto;"><i class="bi bi-cloud-slash"></i></div>
+                    <div class="text-sm fw-bold">No CDN</div>
+                    <div class="text-xs text-muted">All assets vendored in the repository</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center p-3" style="background:var(--color-background-muted);border-radius:var(--radius-lg);">
+                    <div class="icon-badge feature-icon-success mx-auto mb-2" style="margin:0 auto var(--space-2) auto;"><i class="bi bi-check2-all"></i></div>
+                    <div class="text-sm fw-bold">Fully Auditable</div>
+                    <div class="text-xs text-muted"><code>cargo audit</code> for Rust deps, 1 vendored JS file (htmx.min.js)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rust Memory Safety -->
+    <div class="card mb-4">
+        <h5><i class="bi bi-cpu"></i> Rust Memory Safety</h5>
+        <p class="text-sm text-muted mb-3">Entire classes of vulnerabilities are eliminated at compile time by using Rust.</p>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <ul class="text-sm line-height-relaxed" style="list-style:none;padding:0;">
+                    <li class="mb-1"><span class="badge badge-success">Eliminated</span> Buffer overflows</li>
+                    <li class="mb-1"><span class="badge badge-success">Eliminated</span> Use-after-free</li>
+                    <li class="mb-1"><span class="badge badge-success">Eliminated</span> Double-free</li>
+                    <li class="mb-1"><span class="badge badge-success">Eliminated</span> Null pointer dereference</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <ul class="text-sm line-height-relaxed" style="list-style:none;padding:0;">
+                    <li class="mb-1"><span class="badge badge-success">Eliminated</span> Data races</li>
+                    <li class="mb-1"><span class="badge badge-success">Eliminated</span> Iterator invalidation</li>
+                    <li class="mb-1"><span class="badge badge-success">Eliminated</span> Stack overflows (checked)</li>
+                    <li class="mb-1"><span class="badge badge-success">Eliminated</span> Uninitialised memory access</li>
+                </ul>
+            </div>
+        </div>
+        <div class="alert alert-success mt-3 mb-0">
+            <div class="alert-title"><i class="bi bi-check-circle-fill"></i> <strong>No <code>unsafe</code> code</strong></div>
+            <div class="alert-body text-sm">This application uses zero <code>unsafe</code> blocks. The entire codebase is checked by the Rust borrow checker.</div>
+        </div>
+    </div>
+
+    <!-- Deployment Security -->
+    <div class="card mb-4">
+        <h5><i class="bi bi-cloud-check"></i> Deployment Security</h5>
+        <p class="text-sm text-muted mb-3">Production deployment practices built into the project.</p>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number"><i class="bi bi-box" style="font-size:0.75rem"></i></div>
+                <div class="step-content">
+                    <h4>Multi-Stage Docker Build</h4>
+                    <p>Build stage compiles the Rust binary. Runtime stage uses a minimal image with only the binary + static assets. No compiler, no source code in production.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number"><i class="bi bi-heart-pulse" style="font-size:0.75rem"></i></div>
+                <div class="step-content">
+                    <h4>Health Check Endpoint</h4>
+                    <p><code>/healthz</code> endpoint bypasses security middleware for Docker/Kubernetes liveness probes. Returns health status, uptime, and version.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number"><i class="bi bi-terminal" style="font-size:0.75rem"></i></div>
+                <div class="step-content">
+                    <h4>Graceful Shutdown</h4>
+                    <p>Listens for SIGTERM/Ctrl+C. In-flight requests complete before the process exits. No data corruption on deployment.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Checklist -->
+    <div class="card">
+        <h5><i class="bi bi-clipboard-check"></i> Security Checklist for Extending</h5>
+        <p class="text-sm text-muted mb-3">When building on top of this boilerplate, keep these practices in mind.</p>
+        <ul class="text-sm line-height-relaxed" style="list-style:none;padding:0;">
+            <li class="mb-2"><i class="bi bi-check-square text-success me-2"></i> Always use parameterised queries with SQLx — never concatenate SQL strings</li>
+            <li class="mb-2"><i class="bi bi-check-square text-success me-2"></i> Add CSRF tokens to any new forms or POST endpoints</li>
+            <li class="mb-2"><i class="bi bi-check-square text-success me-2"></i> Resist adding custom JS — prefer CSS-only patterns or HTMX attributes. If you must add JS, compute SRI hashes and update CSP in <code>middleware/mod.rs</code></li>
+            <li class="mb-2"><i class="bi bi-check-square text-success me-2"></i> Keep all assets vendored — never add CDN links</li>
+            <li class="mb-2"><i class="bi bi-check-square text-success me-2"></i> Use Askama auto-escaping — never use <code>|safe</code> filter on user input</li>
+            <li class="mb-2"><i class="bi bi-check-square text-success me-2"></i> Run <code>cargo audit</code> periodically to check for known Rust crate vulnerabilities</li>
+            <li class="mb-2"><i class="bi bi-check-square text-success me-2"></i> Validate and sanitise all user input at the handler level</li>
+            <li class="mb-2"><i class="bi bi-check-square text-success me-2"></i> Use rate limiting middleware before adding public-facing endpoints</li>
+            <li><i class="bi bi-check-square text-success me-2"></i> Set the <code>Secure</code> cookie flag in production (HTTPS only)</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
