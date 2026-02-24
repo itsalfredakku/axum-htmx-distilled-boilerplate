@@ -20,6 +20,20 @@
 
         .app-wrapper { display: flex; height: 100vh; overflow: hidden; }
 
+        /* ── CSS-only sidebar toggle (checkbox hack) ── */
+        #sidebar-state { display: none; }
+        #sidebar-state:checked ~ .app-wrapper .sidebar { width: 64px; min-width: 64px; }
+        #sidebar-state:checked ~ .app-wrapper .sidebar .nav-text { display: none; }
+        #sidebar-state:checked ~ .app-wrapper .sidebar .nav-link { justify-content: center; padding: var(--space-3); }
+        #sidebar-state:checked ~ .app-wrapper .sidebar .brand-text { display: none; }
+        #sidebar-state:checked ~ .app-wrapper .sidebar .sidebar-header { justify-content: center; padding: var(--space-3); }
+        #sidebar-state:checked ~ .app-wrapper .sidebar .sidebar-brand { justify-content: center; }
+        #sidebar-state:checked ~ .app-wrapper .sidebar .sidebar-footer span { display: none; }
+        #sidebar-state:checked ~ .app-wrapper .sidebar .sidebar-nav-section { display: none; }
+
+        /* ── CSS-only theme toggle (checkbox + :has) ── */
+        #theme-state { display: none; }
+
         /* Sidebar */
         .sidebar {
             width: 250px; min-width: 250px; height: 100vh;
@@ -50,12 +64,7 @@
         .sidebar .nav-link:hover { background: var(--color-background-muted); color: var(--color-foreground); }
         .sidebar .nav-link.active { background: var(--color-brand); color: white; }
         .sidebar .nav-link i { width: 1.25rem; text-align: center; flex-shrink: 0; font-size: 1rem; line-height: 1; }
-        .sidebar.collapsed .nav-text { display: none; }
-        .sidebar.collapsed .nav-link { justify-content: center; padding: var(--space-3); }
-        .sidebar.collapsed .brand-text { display: none; }
         .sidebar-footer { padding: var(--space-3) var(--space-4); border-top: 1px solid var(--color-border); font-size: var(--font-size-xs); color: var(--color-foreground-subtle); }
-        .sidebar.collapsed .sidebar-footer span { display: none; }
-        .sidebar.collapsed .sidebar-nav-section { display: none; }
 
         /* Main content */
         .main-wrapper { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
@@ -67,6 +76,22 @@
             border-bottom: 1px solid var(--color-border);
         }
         .main-content { flex: 1; overflow-y: auto; padding: var(--space-6); background: var(--color-background-subtle); }
+
+        /* Toggle label styled as button */
+        .toggle-label {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px; cursor: pointer;
+            border-radius: var(--radius-md); border: 1px solid var(--color-border);
+            background: var(--color-background); color: var(--color-foreground-muted);
+            transition: all var(--duration-fast);
+        }
+        .toggle-label:hover { background: var(--color-background-muted); color: var(--color-foreground); }
+
+        /* Theme icon visibility */
+        .theme-icon-dark { display: none; }
+        .theme-icon-light { display: inline; }
+        #theme-state:checked ~ .app-wrapper .theme-icon-dark { display: inline; }
+        #theme-state:checked ~ .app-wrapper .theme-icon-light { display: none; }
 
         /* Stat cards */
         .stat-card { padding: var(--space-4); }
@@ -109,22 +134,26 @@
 <!--
     HTMX: automatically send CSRF token on every request.
     The token is injected by the session middleware as a response header.
-    HTMX reads it from the meta tag and attaches it to all requests.
+    HTMX reads it via hx-headers on body.
 -->
 <body hx-headers='{"X-CSRF-Token": "{{ csrf_token }}"}'>
     <!-- Error toast container (HTMX errors swap here) -->
     <div id="error-toast"></div>
 
+    <!-- CSS-only state checkboxes (hidden, outside app-wrapper so siblings work) -->
+    <input type="checkbox" id="sidebar-state" aria-hidden="true">
+    <input type="checkbox" id="theme-state" aria-hidden="true">
+
     <div class="app-wrapper">
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <a href="/" class="sidebar-brand" hx-boost="true" hx-target="#page-content" hx-select="#page-content" hx-swap="outerHTML" hx-push-url="true">
+                <a href="/" class="sidebar-brand">
                     <i class="bi bi-shield-lock-fill"></i>
                     <span class="brand-text">Hardened App</span>
                 </a>
             </div>
-            <nav class="sidebar-nav" hx-boost="true" hx-target="#page-content" hx-select="#page-content" hx-swap="outerHTML" hx-push-url="true">
+            <nav id="sidebar-nav" class="sidebar-nav" hx-boost="true" hx-target="#page-content" hx-select="#page-content" hx-swap="outerHTML" hx-push-url="true" hx-select-oob="#sidebar-nav">
                 <div class="sidebar-nav-section">Navigation</div>
                 <a href="/" class="nav-link {% if current_page == "home" %}active{% endif %}">
                     <i class="bi bi-house"></i><span class="nav-text">Home</span>
@@ -152,15 +181,15 @@
         <div class="main-wrapper">
             <header class="main-header">
                 <div style="display:flex;align-items:center;gap:var(--space-2)">
-                    <button class="btn btn-light btn-sm" id="sidebar-toggle" style="width:36px;height:36px;">
+                    <label for="sidebar-state" class="toggle-label" title="Toggle sidebar">
                         <i class="bi bi-list"></i>
-                    </button>
+                    </label>
                 </div>
                 <div>
-                    <button class="btn btn-light btn-sm" id="theme-toggle" title="Toggle theme" style="width:36px;height:36px;">
+                    <label for="theme-state" class="toggle-label" title="Toggle theme">
                         <i class="bi bi-sun-fill theme-icon-light"></i>
                         <i class="bi bi-moon-fill theme-icon-dark"></i>
-                    </button>
+                    </label>
                 </div>
             </header>
             <main class="main-content" id="main-content">
