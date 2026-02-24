@@ -154,8 +154,7 @@ docker compose up --build</code></pre>
   middleware/mod.rs    ← Security headers, CSRF, sessions
   models/mod.rs        ← Shared state
 static/
-  js/htmx.min.js      ← Vendored HTMX (SRI-pinned)
-  js/app.js            ← Minimal UI (~50 lines, auditable)
+  js/htmx.min.js      ← Vendored HTMX (SRI-pinned, the only JS)
   css/                 ← Vendored CSS + fonts (no CDN)
 templates/
   base.html            ← Root layout with sidebar & SPA nav
