@@ -42,15 +42,16 @@
             border-right: 1px solid var(--color-border);
             transition: width 0.3s, min-width 0.3s;
         }
-        .sidebar.collapsed { width: 64px; min-width: 64px; }
         .sidebar-header {
-            padding: var(--space-4); border-bottom: 1px solid var(--color-border);
+            height: 56px; min-height: 56px;
+            padding: var(--space-3); border-bottom: 1px solid var(--color-border);
             display: flex; align-items: center; gap: var(--space-3);
         }
         .sidebar-brand {
             display: flex; align-items: center; gap: var(--space-3);
-            text-decoration: none; color: inherit; font-weight: 700; font-size: var(--font-size-lg);
+            text-decoration: none; color: inherit; font-weight: 700; font-size: var(--font-size-xl);
         }
+        .sidebar-brand:hover { text-decoration: none; color: inherit; }
         .sidebar-brand i { font-size: 1.5rem; color: var(--color-brand); line-height: 1; }
         .sidebar-nav { flex: 1; overflow-y: auto; padding: var(--space-2); }
         .sidebar-nav-section { padding: var(--space-2) var(--space-4) var(--space-1); font-size: var(--font-size-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-foreground-subtle); }
@@ -109,13 +110,14 @@
         #error-toast:empty { display: none; }
         #error-toast { position: fixed; top: var(--space-4); right: var(--space-4); z-index: 1000; max-width: 400px; }
 
-        /* Theme icons — only show the active one */
-        [data-theme="light"] .theme-icon-dark { display: none; }
-        [data-theme="dark"] .theme-icon-light { display: none; }
-
-        /* Responsive */
+        /* Responsive — show sidebar via toggle on mobile */
         @media (max-width: 768px) {
             .sidebar { display: none; }
+            #sidebar-state:checked ~ .app-wrapper .sidebar { display: flex; position: fixed; z-index: 100; width: 250px; min-width: 250px; }
+            #sidebar-state:checked ~ .app-wrapper .sidebar .nav-text { display: inline; }
+            #sidebar-state:checked ~ .app-wrapper .sidebar .brand-text { display: inline; }
+            #sidebar-state:checked ~ .app-wrapper .sidebar .sidebar-footer span { display: inline; }
+            #sidebar-state:checked ~ .app-wrapper .sidebar .sidebar-nav-section { display: block; }
             .main-content { padding: var(--space-4); }
         }
     </style>
