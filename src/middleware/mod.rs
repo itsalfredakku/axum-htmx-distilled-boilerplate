@@ -21,11 +21,7 @@ use std::sync::Arc;
 /// SRI hash for the vendored htmx.min.js — update if the file changes.
 /// Generate with: openssl dgst -sha384 -binary static/js/htmx.min.js | openssl base64 -A
 const HTMX_SRI_HASH: &str =
-    "sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+";
-
-/// SRI hash for app.js — update if the file changes.
-const APP_SRI_HASH: &str =
-    "sha384-b+bbZJfixHr9EKRnnF0MPPmu08m+N+9B2DnJbfEn5RQ6lhbwNIAixtrbTdHN35+c";
+    "sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw";
 
 // ─── Security Headers ───────────────────────────────────────────────────────
 
@@ -40,7 +36,7 @@ pub async fn security_headers(request: Request, next: Next) -> Response {
         header::HeaderName::from_static("content-security-policy"),
         format!(
             "default-src 'self'; \
-             script-src 'self' '{HTMX_SRI_HASH}' '{APP_SRI_HASH}'; \
+             script-src 'self' '{HTMX_SRI_HASH}'; \
              style-src 'self' 'unsafe-inline'; \
              img-src 'self' data:; \
              font-src 'self'; \

@@ -98,9 +98,10 @@
     <!--
         HTMX — the ONLY JavaScript loaded. Vendored, SRI-pinned.
         If the hash doesn't match, the browser refuses to execute it.
+        Zero custom JS. All interactions are HTMX attributes or CSS.
     -->
     <script src="/static/js/htmx.min.js"
-            integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+"
+            integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw"
             crossorigin="anonymous"></script>
 
     {% block head %}{% endblock %}
