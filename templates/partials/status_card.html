@@ -1,23 +1,23 @@
 <div class="row g-3 mb-4">
     <div class="col-md-4">
         <div class="card stat-card">
-            <div class="text-sm text-muted mb-1">Status</div>
+            <div class="stat-label">Status</div>
             <div class="d-flex align-items-center gap-2">
-                <span style="width:8px;height:8px;border-radius:50%;background:var(--color-success);display:inline-block;"></span>
-                <strong>{{ status }}</strong>
+                <span class="status-dot"></span>
+                <span class="stat-value" style="font-size:var(--font-size-lg)">{{ status }}</span>
             </div>
         </div>
     </div>
     <div class="col-md-4">
         <div class="card stat-card">
-            <div class="text-sm text-muted mb-1">Uptime</div>
-            <strong>{{ uptime }}</strong>
+            <div class="stat-label">Uptime</div>
+            <span class="stat-value" style="font-size:var(--font-size-lg)">{{ uptime }}</span>
         </div>
     </div>
     <div class="col-md-4">
         <div class="card stat-card">
-            <div class="text-sm text-muted mb-1">Version</div>
-            <strong class="font-mono">v{{ version }}</strong>
+            <div class="stat-label">Version</div>
+            <span class="stat-value font-mono" style="font-size:var(--font-size-lg)">v{{ version }}</span>
         </div>
     </div>
 </div>
