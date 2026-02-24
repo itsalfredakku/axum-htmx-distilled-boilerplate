@@ -3,22 +3,28 @@
 
 {% block content %}
 <div class="container-fluid">
-    <div class="mb-4">
-        <h1 class="text-2xl">HTMX Demo</h1>
-        <p class="text-sm text-muted">Interactive examples — all server-rendered, all HTMX-powered</p>
+    <div class="section-header mb-6">
+        <h1 class="text-2xl"><i class="bi bi-lightning text-brand"></i> HTMX Demo</h1>
+        <p>Interactive examples — all server-rendered, all HTMX-powered. No JS frameworks needed.</p>
     </div>
 
     <div class="row g-4">
         <!-- 1. Click to load -->
         <div class="col-md-6">
             <div class="card">
-                <h5><i class="bi bi-cursor-fill text-primary"></i> Click to Load</h5>
-                <p class="text-sm text-muted">Clicking the button fetches an HTML fragment from the server.</p>
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <div class="icon-badge feature-icon-brand"><i class="bi bi-cursor-fill"></i></div>
+                    <div>
+                        <h5 class="mb-0">Click to Load</h5>
+                        <span class="text-xs text-muted">hx-get &rarr; hx-target &rarr; hx-swap</span>
+                    </div>
+                </div>
+                <p class="text-sm text-muted">Fetch an HTML fragment from the server and swap it into the page.</p>
                 <button class="btn btn-primary btn-sm mb-3"
                         hx-get="/partials/item-list"
                         hx-target="#item-list-target"
                         hx-swap="innerHTML">
-                    Load Items
+                    <i class="bi bi-download"></i> Load Items
                 </button>
                 <div id="item-list-target">
                     <p class="text-sm text-muted"><em>Click the button above&hellip;</em></p>
@@ -29,12 +35,18 @@
         <!-- 2. Form submission -->
         <div class="col-md-6">
             <div class="card">
-                <h5><i class="bi bi-input-cursor-text text-success"></i> Form &rarr; Partial</h5>
-                <p class="text-sm text-muted">Type a name and submit — the greeting is an HTMX-fetched fragment.</p>
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <div class="icon-badge feature-icon-success"><i class="bi bi-input-cursor-text"></i></div>
+                    <div>
+                        <h5 class="mb-0">Form &rarr; Partial</h5>
+                        <span class="text-xs text-muted">hx-get on &lt;form&gt; with query params</span>
+                    </div>
+                </div>
+                <p class="text-sm text-muted">Submit a form — the response is a server-rendered HTML fragment.</p>
                 <form hx-get="/partials/greeting" hx-target="#greeting-target" hx-swap="innerHTML" class="mb-3">
                     <div class="input-group input-group-sm">
                         <input type="text" name="name" class="form-control" placeholder="Your name">
-                        <button class="btn btn-success" type="submit">Greet</button>
+                        <button class="btn btn-success" type="submit"><i class="bi bi-send"></i> Greet</button>
                     </div>
                 </form>
                 <div id="greeting-target"></div>
@@ -44,16 +56,22 @@
         <!-- 3. Polling -->
         <div class="col-md-6">
             <div class="card">
-                <h5><i class="bi bi-arrow-repeat text-info"></i> Live Polling</h5>
-                <p class="text-sm text-muted">This card auto-refreshes every 5 seconds via <code>hx-trigger="every 5s"</code>.</p>
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <div class="icon-badge feature-icon-info"><i class="bi bi-arrow-repeat"></i></div>
+                    <div>
+                        <h5 class="mb-0">Live Polling</h5>
+                        <span class="text-xs text-muted">hx-trigger="every 5s"</span>
+                    </div>
+                </div>
+                <p class="text-sm text-muted">Auto-refreshing content — no WebSockets, just HTMX polling.</p>
                 <div hx-get="/partials/status-card"
                      hx-trigger="every 5s"
                      hx-swap="innerHTML"
                      id="poll-demo">
                     <div class="row g-3">
-                        <div class="col-md-4"><div class="skeleton" style="height:60px;border-radius:var(--radius-md);"></div></div>
-                        <div class="col-md-4"><div class="skeleton" style="height:60px;border-radius:var(--radius-md);"></div></div>
-                        <div class="col-md-4"><div class="skeleton" style="height:60px;border-radius:var(--radius-md);"></div></div>
+                        <div class="col-md-4"><div class="skeleton skeleton-block"></div></div>
+                        <div class="col-md-4"><div class="skeleton skeleton-block"></div></div>
+                        <div class="col-md-4"><div class="skeleton skeleton-block"></div></div>
                     </div>
                 </div>
             </div>
@@ -62,14 +80,76 @@
         <!-- 4. Security info -->
         <div class="col-md-6">
             <div class="card">
-                <h5><i class="bi bi-shield-check text-success"></i> Security Active</h5>
-                <p class="text-sm text-muted">Every HTMX request automatically includes the CSRF token. Try inspecting the network tab — each request sends <code>X-CSRF-Token</code>.</p>
-                <ul class="text-sm" style="line-height: 2;">
-                    <li><i class="bi bi-check-circle text-success"></i> CSRF token: rotating per-session</li>
-                    <li><i class="bi bi-check-circle text-success"></i> CSP: strict, SRI-enforced</li>
-                    <li><i class="bi bi-check-circle text-success"></i> Cookies: HttpOnly + SameSite=Strict</li>
-                    <li><i class="bi bi-check-circle text-success"></i> No inline JS — all in auditable files</li>
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <div class="icon-badge feature-icon-success"><i class="bi bi-shield-check"></i></div>
+                    <div>
+                        <h5 class="mb-0">Security Active</h5>
+                        <span class="text-xs text-muted">CSRF + CSP + SRI on every request</span>
+                    </div>
+                </div>
+                <p class="text-sm text-muted">Inspect the network tab — every HTMX request includes the CSRF token automatically.</p>
+                <ul class="text-sm line-height-relaxed" style="list-style:none;padding:0;">
+                    <li><span class="badge-success badge">Active</span> CSRF token: rotating per-session</li>
+                    <li><span class="badge-success badge">Active</span> CSP: strict, SRI-enforced</li>
+                    <li><span class="badge-success badge">Active</span> Cookies: HttpOnly + SameSite=Strict</li>
+                    <li><span class="badge-success badge">Active</span> No inline JS — all in auditable files</li>
                 </ul>
+            </div>
+        </div>
+
+        <!-- 5. Inline editing -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <div class="icon-badge feature-icon-warning"><i class="bi bi-pencil-square"></i></div>
+                    <div>
+                        <h5 class="mb-0">Inline Edit Pattern</h5>
+                        <span class="text-xs text-muted">hx-swap="outerHTML" for in-place updates</span>
+                    </div>
+                </div>
+                <p class="text-sm text-muted">Click edit to transform a view into an input — a common HTMX pattern.</p>
+                <div id="inline-edit-demo">
+                    <div class="d-flex align-items-center gap-2 p-3" style="background:var(--color-background-muted);border-radius:var(--radius-md);">
+                        <span id="edit-value" class="text-sm fw-bold">Hello, World!</span>
+                        <button class="btn btn-sm btn-outline-primary" onclick="document.getElementById('edit-form-demo').style.display='flex';this.parentElement.style.display='none';">
+                            <i class="bi bi-pencil"></i> Edit
+                        </button>
+                    </div>
+                    <div id="edit-form-demo" class="input-group input-group-sm" style="display:none;">
+                        <input type="text" class="form-control" value="Hello, World!" id="edit-input-demo">
+                        <button class="btn btn-primary" onclick="document.getElementById('edit-value').textContent=document.getElementById('edit-input-demo').value;document.getElementById('edit-form-demo').style.display='none';document.getElementById('edit-form-demo').previousElementSibling.style.display='flex';">
+                            Save
+                        </button>
+                    </div>
+                </div>
+                <p class="text-xs text-muted mt-2">In a real app, the edit/save buttons would use <code>hx-get</code> and <code>hx-put</code> to fetch and submit server-rendered forms.</p>
+            </div>
+        </div>
+
+        <!-- 6. Progress indicator -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <div class="icon-badge feature-icon-danger"><i class="bi bi-hourglass-split"></i></div>
+                    <div>
+                        <h5 class="mb-0">Loading Indicators</h5>
+                        <span class="text-xs text-muted">htmx-indicator class</span>
+                    </div>
+                </div>
+                <p class="text-sm text-muted">HTMX adds the <code>htmx-request</code> class during requests — use it for spinners.</p>
+                <div>
+                    <button class="btn btn-primary btn-sm"
+                            hx-get="/partials/greeting?name=HTMX"
+                            hx-target="#loading-demo-target"
+                            hx-swap="innerHTML"
+                            hx-indicator="#loading-spinner">
+                        <i class="bi bi-arrow-clockwise"></i> Fetch with Indicator
+                    </button>
+                    <span id="loading-spinner" class="htmx-indicator text-sm text-muted ms-2">
+                        <i class="bi bi-arrow-repeat"></i> Loading...
+                    </span>
+                </div>
+                <div id="loading-demo-target" class="mt-2"></div>
             </div>
         </div>
     </div>
