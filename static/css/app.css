@@ -226,7 +226,114 @@ th { font-weight: 600; background: var(--color-background-muted); }
 .bi { display: inline-block; width: 1em; height: 1em; vertical-align: -0.125em; }
 
 /* ============================================================
-   Utility Classes (replace inline styles in templates)
+   Hero Section
+   ============================================================ */
+.hero {
+  background: var(--gradient-hero);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8) var(--space-6);
+  margin-bottom: var(--space-6);
+}
+.hero h1 { font-size: var(--font-size-3xl); margin-bottom: var(--space-2); }
+.hero p { color: var(--color-foreground-muted); font-size: var(--font-size-lg); max-width: 36rem; }
+
+/* ============================================================
+   Feature Cards (icon + title + desc grid)
+   ============================================================ */
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-4); }
+.feature-card {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  transition: border-color var(--duration-normal), box-shadow var(--duration-normal);
+}
+.feature-card:hover { border-color: var(--color-brand); box-shadow: var(--shadow-md); }
+.feature-card .feature-icon {
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-lg);
+  font-size: 1.125rem;
+  margin-bottom: var(--space-3);
+}
+.feature-icon-brand { background: var(--color-brand-muted); color: var(--color-brand); }
+.feature-icon-success { background: var(--color-success-muted); color: var(--color-success); }
+.feature-icon-warning { background: var(--color-warning-muted); color: var(--color-warning); }
+.feature-icon-info { background: var(--color-info-muted); color: var(--color-info); }
+.feature-icon-danger { background: var(--color-danger-muted); color: var(--color-danger); }
+.feature-card h4 { font-size: var(--font-size-sm); font-weight: 600; margin-bottom: var(--space-1); }
+.feature-card p { font-size: var(--font-size-sm); color: var(--color-foreground-muted); margin-bottom: 0; }
+
+/* ============================================================
+   Stat Cards (enhanced)
+   ============================================================ */
+.stat-card { padding: var(--space-5); position: relative; overflow: hidden; }
+.stat-card::after {
+  content: ''; position: absolute; top: 0; right: 0; width: 60px; height: 60px;
+  background: var(--gradient-card-shine); border-radius: 0 0 0 var(--radius-2xl);
+}
+.stat-label { font-size: var(--font-size-xs); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-foreground-muted); margin-bottom: var(--space-1); }
+.stat-value { font-size: var(--font-size-2xl); font-weight: 700; line-height: 1.2; }
+
+/* ============================================================
+   Section Headers
+   ============================================================ */
+.section-header { margin-bottom: var(--space-4); }
+.section-header h2 { font-size: var(--font-size-lg); font-weight: 600; margin-bottom: var(--space-1); }
+.section-header p { color: var(--color-foreground-muted); font-size: var(--font-size-sm); margin-bottom: 0; }
+
+/* ============================================================
+   Tabs
+   ============================================================ */
+.tab-nav { display: flex; gap: var(--space-1); border-bottom: 1px solid var(--color-border); margin-bottom: var(--space-4); overflow-x: auto; }
+.tab-btn {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-sm); font-weight: 500;
+  color: var(--color-foreground-muted);
+  background: none; border: none; border-bottom: 2px solid transparent;
+  cursor: pointer; white-space: nowrap;
+  transition: color var(--duration-fast), border-color var(--duration-fast);
+}
+.tab-btn:hover { color: var(--color-foreground); }
+.tab-btn.active { color: var(--color-brand); border-bottom-color: var(--color-brand); }
+
+/* ============================================================
+   Divider
+   ============================================================ */
+.divider { height: 1px; background: var(--color-border); margin: var(--space-6) 0; }
+
+/* ============================================================
+   Progress Bar
+   ============================================================ */
+.progress { height: 6px; background: var(--color-background-muted); border-radius: var(--radius-full); overflow: hidden; }
+.progress-bar { height: 100%; background: var(--gradient-brand); border-radius: var(--radius-full); transition: width var(--duration-slow); }
+
+/* ============================================================
+   Icon Badge (circular icon container)
+   ============================================================ */
+.icon-badge {
+  width: 48px; height: 48px; border-radius: var(--radius-xl);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 1.25rem; flex-shrink: 0;
+}
+
+/* ============================================================
+   Timeline / Steps
+   ============================================================ */
+.steps { display: flex; flex-direction: column; gap: var(--space-4); }
+.step { display: flex; gap: var(--space-4); }
+.step-number {
+  width: 32px; height: 32px; border-radius: var(--radius-full);
+  background: var(--color-brand); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--font-size-sm); font-weight: 600; flex-shrink: 0;
+}
+.step-content h4 { font-size: var(--font-size-sm); font-weight: 600; margin-bottom: var(--space-1); }
+.step-content p { font-size: var(--font-size-sm); color: var(--color-foreground-muted); margin-bottom: 0; }
+
+/* ============================================================
+   Utility Classes
    ============================================================ */
 .inline-flex-center { display: flex; align-items: center; gap: var(--space-2); }
 .btn-icon { width: 36px; height: 36px; }
@@ -235,3 +342,38 @@ th { font-weight: 600; background: var(--color-background-muted); }
 .pre-block { background: var(--color-background-muted); padding: var(--space-4); border-radius: var(--radius-md); overflow-x: auto; }
 .container-narrow { max-width: 48rem; }
 .line-height-relaxed { line-height: 2; }
+.w-100 { width: 100%; }
+.overflow-hidden { overflow: hidden; }
+.border-0 { border: 0; }
+.rounded { border-radius: var(--radius-lg); }
+.opacity-75 { opacity: 0.75; }
+.text-brand { color: var(--color-brand); }
+
+/* Sizing */
+.mb-6 { margin-bottom: var(--space-6); }
+.mb-8 { margin-bottom: var(--space-8); }
+.mt-6 { margin-top: var(--space-6); }
+.mt-8 { margin-top: var(--space-8); }
+.p-6 { padding: var(--space-6); }
+
+/* Responsive grid additions */
+@media (min-width: 768px) {
+  .col-md-3 { flex: 0 0 25%; max-width: 25%; }
+}
+@media (min-width: 1024px) {
+  .col-lg-3 { flex: 0 0 25%; max-width: 25%; }
+  .col-lg-4 { flex: 0 0 33.333%; max-width: 33.333%; }
+  .col-lg-6 { flex: 0 0 50%; max-width: 50%; }
+  .col-lg-8 { flex: 0 0 66.666%; max-width: 66.666%; }
+}
+
+/* ============================================================
+   SPA Page Transition
+   ============================================================ */
+#page-content {
+  animation: fadeSlideIn var(--duration-slow) ease-out;
+}
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
