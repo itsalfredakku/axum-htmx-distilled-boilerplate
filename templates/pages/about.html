@@ -2,52 +2,141 @@
 {% block title %}About - Axum HTMX App{% endblock %}
 
 {% block content %}
-<div class="container-fluid" style="max-width: 48rem;">
-    <h1 class="text-2xl mb-4">About This Application</h1>
+<div class="container-fluid container-narrow">
+    <div class="section-header mb-6">
+        <h1 class="text-2xl"><i class="bi bi-info-circle text-brand"></i> About This Application</h1>
+        <p>Hardened full-stack Rust web application. No API. No external dependencies. No attack surface.</p>
+    </div>
 
+    <!-- Tech Stack -->
+    <div class="card mb-4">
+        <h5><i class="bi bi-stack"></i> Tech Stack</h5>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);background:var(--color-background-muted);border-radius:var(--radius-md);">
+                    <div class="icon-badge feature-icon-brand"><i class="bi bi-gear-fill"></i></div>
+                    <div>
+                        <div class="text-sm fw-bold">Axum 0.7</div>
+                        <div class="text-xs text-muted">Rust Web Framework</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);background:var(--color-background-muted);border-radius:var(--radius-md);">
+                    <div class="icon-badge feature-icon-info"><i class="bi bi-lightning-charge-fill"></i></div>
+                    <div>
+                        <div class="text-sm fw-bold">HTMX</div>
+                        <div class="text-xs text-muted">Hypermedia Controls</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);background:var(--color-background-muted);border-radius:var(--radius-md);">
+                    <div class="icon-badge feature-icon-success"><i class="bi bi-database-fill"></i></div>
+                    <div>
+                        <div class="text-sm fw-bold">SQLite + SQLx</div>
+                        <div class="text-xs text-muted">Embedded Database</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Architecture -->
     <div class="card mb-4">
         <h5><i class="bi bi-shield-lock"></i> Security Architecture</h5>
-        <p class="text-sm text-muted">Hardened full-stack Rust web application. No API. No external dependencies. No attack surface.</p>
-        <ul class="text-sm" style="line-height: 2;">
-            <li><strong>Backend:</strong> Axum — memory-safe Rust, compiled binary</li>
-            <li><strong>Frontend:</strong> Server-rendered HTML + HTMX (single vendored JS file)</li>
-            <li><strong>CSRF:</strong> Per-session tokens on all state-changing requests</li>
-            <li><strong>CSP:</strong> Strict Content-Security-Policy with SRI hashes — no inline JS</li>
-            <li><strong>Sessions:</strong> HttpOnly, SameSite=Strict cookies — not accessible from JS</li>
-            <li><strong>Templates:</strong> Askama (compiled) — no template injection possible</li>
-            <li><strong>Assets:</strong> All vendored locally — zero CDN, zero external requests</li>
-            <li><strong>Headers:</strong> No server fingerprint, no referrer leaks, no DNS prefetch</li>
+        <ul class="text-sm line-height-relaxed" style="list-style:none;padding:0;">
+            <li class="mb-2"><span class="badge badge-success">Rust</span> Memory-safe compiled binary — no buffer overflows, no GC pauses</li>
+            <li class="mb-2"><span class="badge badge-success">HTMX</span> Single vendored JS file — no npm, no build step, no supply chain risk</li>
+            <li class="mb-2"><span class="badge badge-success">CSRF</span> Per-session HMAC tokens on all state-changing requests</li>
+            <li class="mb-2"><span class="badge badge-success">CSP</span> Strict Content-Security-Policy with SRI hashes — no inline JS</li>
+            <li class="mb-2"><span class="badge badge-success">Cookies</span> HttpOnly + SameSite=Strict — not accessible from JS</li>
+            <li class="mb-2"><span class="badge badge-success">Templates</span> Askama (compiled) — no template injection possible</li>
+            <li class="mb-2"><span class="badge badge-success">Assets</span> All vendored locally — zero CDN, zero external requests</li>
+            <li><span class="badge badge-success">Headers</span> No server fingerprint, no referrer leaks, no DNS prefetch</li>
         </ul>
     </div>
 
+    <!-- How it Works -->
     <div class="card mb-4">
-        <h5>How HTMX SPA Works</h5>
-        <ol class="text-sm" style="line-height: 2;">
-            <li>Browser navigates to <code>/</code>, <code>/about</code>, etc. — server returns a <strong>full HTML page</strong></li>
-            <li>HTMX attributes like <code>hx-get="/partials/status-card"</code> fire requests that return <strong>HTML fragments</strong></li>
-            <li>HTMX swaps the fragment into the page — no full reload, feels like a SPA</li>
-            <li>Polling (<code>hx-trigger="every 10s"</code>) keeps data live without WebSockets</li>
-            <li>CSRF tokens rotate automatically — HTMX sends them on every request</li>
-        </ol>
+        <h5><i class="bi bi-diagram-3"></i> How HTMX SPA Works</h5>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Full Page Load</h4>
+                    <p>Browser navigates to <code>/</code>, <code>/about</code>, etc. — server returns a complete HTML page.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>HTMX Partial Requests</h4>
+                    <p>Attributes like <code>hx-get="/partials/status-card"</code> fire XHR requests returning HTML fragments.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>DOM Swap</h4>
+                    <p>HTMX swaps the fragment into the page — no full reload, feels like a SPA.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>Live Polling</h4>
+                    <p><code>hx-trigger="every 10s"</code> keeps data fresh without WebSockets or SSE.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h4>Auto CSRF</h4>
+                    <p>CSRF tokens rotate automatically — HTMX sends them on every request via <code>hx-headers</code>.</p>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <!-- Threat Model -->
     <div class="card mb-4">
-        <h5>Threat Model</h5>
-        <ul class="text-sm" style="line-height: 2;">
-            <li><strong>XSS:</strong> Blocked — strict CSP, no inline scripts, SRI on all JS</li>
-            <li><strong>CSRF:</strong> Blocked — per-session HMAC tokens, SameSite cookies</li>
-            <li><strong>Clickjacking:</strong> Blocked — X-Frame-Options: DENY, frame-ancestors 'none'</li>
-            <li><strong>Supply chain:</strong> Eliminated — zero npm, zero CDN, all assets vendored</li>
-            <li><strong>API abuse:</strong> Eliminated — no JSON API exists</li>
-            <li><strong>Template injection:</strong> Impossible — askama compiles templates at build time</li>
-            <li><strong>Fingerprinting:</strong> Minimized — no server header, no referrer, no DNS prefetch</li>
-        </ul>
+        <h5><i class="bi bi-exclamation-triangle"></i> Threat Model</h5>
+        <table>
+            <thead>
+                <tr><th>Attack Vector</th><th>Status</th><th>How</th></tr>
+            </thead>
+            <tbody class="text-sm">
+                <tr><td>XSS</td><td><span class="badge badge-success">Blocked</span></td><td>Strict CSP, no inline scripts, SRI on all JS</td></tr>
+                <tr><td>CSRF</td><td><span class="badge badge-success">Blocked</span></td><td>Per-session HMAC tokens, SameSite cookies</td></tr>
+                <tr><td>Clickjacking</td><td><span class="badge badge-success">Blocked</span></td><td>X-Frame-Options: DENY, frame-ancestors 'none'</td></tr>
+                <tr><td>Supply Chain</td><td><span class="badge badge-success">Eliminated</span></td><td>Zero npm, zero CDN, all assets vendored</td></tr>
+                <tr><td>API Abuse</td><td><span class="badge badge-success">Eliminated</span></td><td>No JSON API exists — HTML only</td></tr>
+                <tr><td>Template Injection</td><td><span class="badge badge-success">Impossible</span></td><td>Askama compiles templates at build time</td></tr>
+                <tr><td>Fingerprinting</td><td><span class="badge badge-success">Minimized</span></td><td>No server header, no referrer, no DNS prefetch</td></tr>
+            </tbody>
+        </table>
     </div>
 
+    <!-- Getting Started -->
+    <div class="card mb-4">
+        <h5><i class="bi bi-rocket-takeoff"></i> Getting Started</h5>
+        <pre class="text-sm font-mono"><code># Clone and run
+git clone &lt;repo-url&gt;
+cd axum-htmx-distilled-boilerplate
+cargo run
+
+# Build for production
+cargo build --release
+
+# Docker
+docker compose up --build</code></pre>
+    </div>
+
+    <!-- Project Structure -->
     <div class="card">
-        <h5>Project Structure</h5>
-        <pre class="text-sm font-mono" style="background:var(--color-background-muted);padding:var(--space-4);border-radius:var(--radius-md);overflow-x:auto;">
-src/
+        <h5><i class="bi bi-folder2-open"></i> Project Structure</h5>
+        <pre class="text-sm font-mono"><code>src/
   bin/main.rs          ← Entry point, router, middleware
   lib.rs               ← Library root with macro exports
   config.rs            ← TOML config loader
@@ -57,17 +146,22 @@ src/
     templates.rs       ← Full-page handlers (with CSRF)
     partials.rs        ← HTMX partial handlers
   services/
-    mod.rs             ← Service container
-    csrf.rs            ← CSRF token generation + validation
-    session.rs         ← Server-side session management
-    health.rs          ← Health service (trait + impl)
-    items.rs           ← Item service (in-memory, DB-ready)
+    mod.rs             ← Service container (trait-based DI)
+    csrf.rs            ← CSRF token gen + validation
+    session.rs         ← Server-side session store
+    health.rs          ← Health service
+    items.rs           ← Item service (DB-backed)
   middleware/mod.rs    ← Security headers, CSRF, sessions
   models/mod.rs        ← Shared state
 static/
   js/htmx.min.js      ← Vendored HTMX (SRI-pinned)
-  js/app.js            ← Minimal UI (~30 lines, auditable)
-  css/                 ← Vendored CSS + fonts (no CDN)</pre>
+  js/app.js            ← Minimal UI (~50 lines, auditable)
+  css/                 ← Vendored CSS + fonts (no CDN)
+templates/
+  base.html            ← Root layout with sidebar & SPA nav
+  pages/*.html         ← Full page templates
+  partials/*.html      ← HTMX fragment templates
+  components/*.html    ← Shared components & design tokens</code></pre>
     </div>
 </div>
 {% endblock %}
