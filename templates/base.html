@@ -39,6 +39,7 @@
         }
         .sidebar-brand i { font-size: 1.5rem; color: var(--color-brand); line-height: 1; }
         .sidebar-nav { flex: 1; overflow-y: auto; padding: var(--space-2); }
+        .sidebar-nav-section { padding: var(--space-2) var(--space-4) var(--space-1); font-size: var(--font-size-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-foreground-subtle); }
         .sidebar .nav-link {
             display: flex; align-items: center; gap: var(--space-3);
             padding: var(--space-3) var(--space-4); margin-bottom: var(--space-1);
@@ -52,6 +53,9 @@
         .sidebar.collapsed .nav-text { display: none; }
         .sidebar.collapsed .nav-link { justify-content: center; padding: var(--space-3); }
         .sidebar.collapsed .brand-text { display: none; }
+        .sidebar-footer { padding: var(--space-3) var(--space-4); border-top: 1px solid var(--color-border); font-size: var(--font-size-xs); color: var(--color-foreground-subtle); }
+        .sidebar.collapsed .sidebar-footer span { display: none; }
+        .sidebar.collapsed .sidebar-nav-section { display: none; }
 
         /* Main content */
         .main-wrapper { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
@@ -120,16 +124,24 @@
                 </a>
             </div>
             <nav class="sidebar-nav" hx-boost="true" hx-target="#page-content" hx-select="#page-content" hx-swap="outerHTML" hx-push-url="true">
+                <div class="sidebar-nav-section">Navigation</div>
                 <a href="/" class="nav-link {% if current_page == "home" %}active{% endif %}">
                     <i class="bi bi-house"></i><span class="nav-text">Home</span>
                 </a>
                 <a href="/demo" class="nav-link {% if current_page == "demo" %}active{% endif %}">
                     <i class="bi bi-lightning"></i><span class="nav-text">Demo</span>
                 </a>
+                <a href="/components" class="nav-link {% if current_page == "components" %}active{% endif %}">
+                    <i class="bi bi-grid-1x2"></i><span class="nav-text">Components</span>
+                </a>
+                <div class="sidebar-nav-section" style="margin-top:var(--space-3)">Reference</div>
                 <a href="/about" class="nav-link {% if current_page == "about" %}active{% endif %}">
                     <i class="bi bi-info-circle"></i><span class="nav-text">About</span>
                 </a>
             </nav>
+            <div class="sidebar-footer">
+                <span>v0.1.0 &middot; Axum + HTMX</span>
+            </div>
         </aside>
 
         <!-- Main -->
