@@ -14,6 +14,7 @@ use crate::services::session::SESSION_COOKIE;
 crate::define_page!(HomePage, "pages/home.html", { current_page: &'static str, csrf_token: String });
 crate::define_page!(AboutPage, "pages/about.html", { current_page: &'static str, csrf_token: String });
 crate::define_page!(DemoPage, "pages/demo.html", { current_page: &'static str, csrf_token: String });
+crate::define_page!(ComponentsPage, "pages/components.html", { current_page: &'static str, csrf_token: String });
 
 /// Extract session ID from request cookies
 fn get_session_id(headers: &axum::http::HeaderMap) -> Option<String> {
@@ -67,6 +68,19 @@ pub async fn demo_page(
     let csrf_token = state.services.csrf.generate_token(&sid);
     DemoPage {
         current_page: "demo",
+        csrf_token,
+    }
+    .render_response()
+}
+
+pub async fn components_page(
+    State(state): State<Arc<AppState>>,
+    headers: axum::http::HeaderMap,
+) -> impl IntoResponse {
+    let sid = get_session_id(&headers).unwrap_or_default();
+    let csrf_token = state.services.csrf.generate_token(&sid);
+    ComponentsPage {
+        current_page: "components",
         csrf_token,
     }
     .render_response()

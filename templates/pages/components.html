@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+{% block title %}Components - Axum HTMX App{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="section-header mb-6">
+        <h1 class="text-2xl"><i class="bi bi-grid-1x2 text-brand"></i> UI Components</h1>
+        <p>Living style guide — every component available in this design system. Copy-paste ready.</p>
+    </div>
+
+    <!-- Buttons -->
+    <div class="card mb-4">
+        <h5><i class="bi bi-hand-index"></i> Buttons</h5>
+        <p class="text-sm text-muted mb-3">Solid, outline, and size variants.</p>
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            <button class="btn btn-primary">Primary</button>
+            <button class="btn btn-secondary">Secondary</button>
+            <button class="btn btn-success">Success</button>
+            <button class="btn btn-danger">Danger</button>
+            <button class="btn btn-light">Light</button>
+        </div>
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            <button class="btn btn-outline-primary">Outline Primary</button>
+            <button class="btn btn-outline-secondary">Outline Secondary</button>
+        </div>
+        <div class="d-flex flex-wrap gap-2 align-items-center">
+            <button class="btn btn-primary btn-sm">Small</button>
+            <button class="btn btn-primary">Default</button>
+            <button class="btn btn-primary btn-lg">Large</button>
+            <button class="btn btn-primary" disabled>Disabled</button>
+        </div>
+    </div>
+
+    <!-- Badges -->
+    <div class="card mb-4">
+        <h5><i class="bi bi-tag"></i> Badges</h5>
+        <p class="text-sm text-muted mb-3">Status indicators and labels.</p>
+        <div class="d-flex flex-wrap gap-2">
+            <span class="badge badge-primary"><i class="bi bi-circle-fill" style="font-size:0.5rem"></i> Primary</span>
+            <span class="badge badge-success"><i class="bi bi-check-circle"></i> Success</span>
+            <span class="badge badge-warning"><i class="bi bi-exclamation-triangle"></i> Warning</span>
+            <span class="badge badge-danger"><i class="bi bi-x-circle"></i> Danger</span>
+            <span class="badge badge-info"><i class="bi bi-info-circle"></i> Info</span>
+        </div>
+    </div>
+
+    <!-- Alerts -->
+    <div class="card mb-4">
+        <h5><i class="bi bi-bell"></i> Alerts</h5>
+        <p class="text-sm text-muted mb-3">Contextual feedback messages.</p>
+        <div class="alert alert-success">
+            <div class="alert-title"><i class="bi bi-check-circle-fill"></i> <strong>Success!</strong></div>
+            <div class="alert-body text-sm">Operation completed successfully.</div>
+        </div>
+        <div class="alert alert-warning">
+            <div class="alert-title"><i class="bi bi-exclamation-triangle-fill"></i> <strong>Warning</strong></div>
+            <div class="alert-body text-sm">Please review before proceeding.</div>
+        </div>
+        <div class="alert alert-danger">
+            <div class="alert-title"><i class="bi bi-x-circle-fill"></i> <strong>Error</strong></div>
+            <div class="alert-body text-sm">Something went wrong. Please try again.</div>
+        </div>
+        <div class="alert alert-info m-0">
+            <div class="alert-title"><i class="bi bi-info-circle-fill"></i> <strong>Info</strong></div>
+            <div class="alert-body text-sm">Here's some useful information.</div>
+        </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="card mb-4">
+        <h5><i class="bi bi-card-heading"></i> Cards</h5>
+        <p class="text-sm text-muted mb-3">Content containers with optional feature icons.</p>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="card">
+                    <h5>Basic Card</h5>
+                    <p class="text-sm text-muted m-0">A simple content container with title and text.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card stat-card">
+                    <div class="stat-label">Stat Card</div>
+                    <div class="stat-value">1,234</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon feature-icon-brand"><i class="bi bi-star-fill"></i></div>
+                    <h4>Feature Card</h4>
+                    <p>With icon badge and hover effect.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forms -->
+    <div class="card mb-4">
+        <h5><i class="bi bi-input-cursor-text"></i> Forms</h5>
+        <p class="text-sm text-muted mb-3">Input fields, labels, and form groups.</p>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Text Input</label>
+                <input type="text" class="form-control" placeholder="Enter text...">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Email Input</label>
+                <input type="email" class="form-control" placeholder="name@example.com">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">With Button (Input Group)</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search...">
+                    <button class="btn btn-primary"><i class="bi bi-search"></i></button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Select</label>
+                <select class="form-control">
+                    <option>Option 1</option>
+                    <option>Option 2</option>
+                    <option>Option 3</option>
+                </select>
+            </div>
+            <div class="col-12">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="check1" checked>
+                    <label for="check1" class="text-sm">Checkbox option (checked)</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tables -->
+    <div class="card mb-4">
+        <h5><i class="bi bi-table"></i> Tables</h5>
+        <p class="text-sm text-muted mb-3">Clean data tables.</p>
+        <div style="overflow-x:auto;">
+            <table>
+                <thead>
+                    <tr><th>Name</th><th>Role</th><th>Status</th><th>Actions</th></tr>
+                </thead>
+                <tbody class="text-sm">
+                    <tr>
+                        <td class="fw-bold">Alice Chen</td>
+                        <td>Admin</td>
+                        <td><span class="badge badge-success">Active</span></td>
+                        <td><button class="btn btn-sm btn-outline-primary">Edit</button></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">Bob Smith</td>
+                        <td>Developer</td>
+                        <td><span class="badge badge-success">Active</span></td>
+                        <td><button class="btn btn-sm btn-outline-primary">Edit</button></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold">Carol Davis</td>
+                        <td>Viewer</td>
+                        <td><span class="badge badge-warning">Pending</span></td>
+                        <td><button class="btn btn-sm btn-outline-primary">Edit</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Lists -->
+    <div class="card mb-4">
+        <h5><i class="bi bi-list-ul"></i> Lists</h5>
+        <p class="text-sm text-muted mb-3">Grouped list items.</p>
+        <div class="list-group">
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong class="text-sm">List Item One</strong>
+                    <div class="text-xs text-muted">Description text</div>
+                </div>
+                <span class="badge badge-primary">New</span>
+            </div>
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong class="text-sm">List Item Two</strong>
+                    <div class="text-xs text-muted">Another description</div>
+                </div>
+                <span class="badge badge-success">Done</span>
+            </div>
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong class="text-sm">List Item Three</strong>
+                    <div class="text-xs text-muted">More info here</div>
+                </div>
+                <span class="badge badge-warning">Pending</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Bars -->
+    <div class="card mb-4">
+        <h5><i class="bi bi-bar-chart"></i> Progress Bars</h5>
+        <p class="text-sm text-muted mb-3">Visual indicators for progress and completion.</p>
+        <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1"><span class="text-sm">Storage</span><span class="text-sm text-muted">75%</span></div>
+            <div class="progress"><div class="progress-bar" style="width:75%"></div></div>
+        </div>
+        <div class="mb-3">
+            <div class="d-flex justify-content-between mb-1"><span class="text-sm">Memory</span><span class="text-sm text-muted">42%</span></div>
+            <div class="progress"><div class="progress-bar" style="width:42%"></div></div>
+        </div>
+        <div>
+            <div class="d-flex justify-content-between mb-1"><span class="text-sm">CPU</span><span class="text-sm text-muted">12%</span></div>
+            <div class="progress"><div class="progress-bar" style="width:12%"></div></div>
+        </div>
+    </div>
+
+    <!-- Steps -->
+    <div class="card mb-4">
+        <h5><i class="bi bi-signpost-2"></i> Steps</h5>
+        <p class="text-sm text-muted mb-3">Sequential process or tutorial steps.</p>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Install Rust</h4>
+                    <p>Use <code>rustup</code> to install the Rust toolchain.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Clone Repository</h4>
+                    <p>Get the boilerplate source code from the repository.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Run the Server</h4>
+                    <p>Execute <code>cargo run</code> and visit <code>http://localhost:8000</code>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Blocks -->
+    <div class="card mb-4">
+        <h5><i class="bi bi-code-slash"></i> Code Blocks</h5>
+        <p class="text-sm text-muted mb-3">Inline <code>code</code> and block code formatting.</p>
+        <pre><code>// Rust handler example
+pub async fn home_page(
+    State(state): State&lt;Arc&lt;AppState&gt;&gt;,
+    headers: axum::http::HeaderMap,
+) -&gt; impl IntoResponse {
+    let sid = get_session_id(&amp;headers);
+    let csrf_token = state.services.csrf.generate_token(&amp;sid);
+    HomePage { current_page: "home", csrf_token }.render_response()
+}</code></pre>
+    </div>
+
+    <!-- Typography -->
+    <div class="card">
+        <h5><i class="bi bi-fonts"></i> Typography</h5>
+        <p class="text-sm text-muted mb-3">Heading scale and text utilities.</p>
+        <h1>Heading 1</h1>
+        <h2>Heading 2</h2>
+        <h3>Heading 3</h3>
+        <h4>Heading 4</h4>
+        <div class="divider"></div>
+        <p class="text-sm">Body text <code>.text-sm</code> — the default for content.</p>
+        <p class="text-xs text-muted">Caption text <code>.text-xs .text-muted</code> — for secondary info.</p>
+        <p class="text-sm"><span class="text-primary">Primary</span> &middot; <span class="text-success">Success</span> &middot; <span class="text-warning">Warning</span> &middot; <span class="text-danger">Danger</span> &middot; <span class="text-info">Info</span></p>
+    </div>
+</div>
+{% endblock %}

@@ -43,7 +43,7 @@ function updateNavState() {
             link.classList.add('active');
         }
     });
-    var titles = { '/': 'Home', '/demo': 'Demo', '/about': 'About' };
+    var titles = { '/': 'Home', '/demo': 'Demo', '/components': 'Components', '/about': 'About' };
     document.title = (titles[path] || 'Page') + ' - Axum HTMX App';
 }
 
