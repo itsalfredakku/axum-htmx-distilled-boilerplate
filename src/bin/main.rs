@@ -59,6 +59,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .route("/about", get(templates::about_page))
         .route("/demo", get(templates::demo_page))
         .route("/components", get(templates::components_page))
+        .route("/security", get(templates::security_page))
         .merge(partial_routes)
         .merge(health_route)
         // Static files (vendored CSS, JS, fonts — no external CDN)
